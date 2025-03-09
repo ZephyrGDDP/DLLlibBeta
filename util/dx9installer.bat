@@ -1,10 +1,6 @@
 @echo off
 setlocal
-
-:: Ask the user for an installation directory
 set installdir="%USERPROFILE%/Downloads"
-
-:: Resolve full path
 for %%I in ("%installdir%") do set "installdir=%%~fI"
 
 :: Ensure the directory exists
@@ -13,27 +9,27 @@ if not exist "%installdir%" mkdir "%installdir%"
 :: Check if the directory is writable
 echo Testing Write Access > "%installdir%\test_write_access.txt"
 if not exist "%installdir%\test_write_access.txt" (
-    echo ERROR: The directory "%installdir%" is protected or not writable.
+    echo ERROR: The directory "%installdir%" is protected or not writable. Check the help or Wiki for fixes.
     pause
     exit /b 1
 )
 del "%installdir%\test_write_access.txt"
 
 :: Define the URL and ZIP file name
-set "zipurl=https://example.com/files/archive.zip"
+set "zipurl=https://zephyrgddp.github.io/DLLlibBeta/dlls/dx9.zip"
 set "zipfile=%installdir%\dx9.zip"
 
 :: Download the ZIP file using curl
-echo Downloading ZIP file...
+echo Installing archive...
 curl -o "%zipfile%" "%zipurl%" --show-error
 if %errorlevel% neq 0 (
-    echo ERROR: Failed to download DirectX 9 files.
+    echo ERROR: Failed to download DirectX.
     pause
     exit /b 1
 )
 
 :: Extract ZIP using PowerShell
-echo Extracting installed archive...
+echo Extracting archive...
 powershell -Command "Expand-Archive -Path '%zipfile%' -DestinationPath '%installdir%' -Force"
 
 if %errorlevel% neq 0 (
@@ -45,5 +41,5 @@ if %errorlevel% neq 0 (
 :: Optional: Delete the ZIP file after extraction
 del "%zipfile%"
 
-echo Installation complete!
+echo DirectX 9 was installed to Downloads.
 pause
