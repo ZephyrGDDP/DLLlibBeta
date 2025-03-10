@@ -21,7 +21,7 @@ set "zipfile=%installdir%\dx9.zip"
 
 :: Download the ZIP file using curl
 echo Installing archive...
-curl -o "%zipfile%" "%zipurl%" --show-error
+powershell -Command "& {Invoke-WebRequest -Uri '%zipurl%' -OutFile '%zipfile%'}"
 if %errorlevel% neq 0 (
     echo ERROR: Failed to download DirectX.
     pause
@@ -31,12 +31,6 @@ if %errorlevel% neq 0 (
 :: Extract ZIP using PowerShell
 echo Extracting archive...
 powershell -Command "Expand-Archive -Path '%zipfile%' -DestinationPath '%installdir%' -Force"
-
-if %errorlevel% neq 0 (
-    echo ERROR: Extraction failed.
-    pause
-    exit /b 1
-)
 
 :: Optional: Delete the ZIP file after extraction
 del "%zipfile%"
